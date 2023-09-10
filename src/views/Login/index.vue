@@ -1,17 +1,44 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { getUserApi } from '@/services/userApi'
+import { useUserStore } from '@/stores/user.d'
+import { useRouter } from 'vue-router'
+import { showToast } from 'vant'
 
-const agree = ref()
+const router = useRouter()
+const store = useUserStore()
+const yzm = ref<string | number>('获取验证码')
+const agree = ref(false)
 const username = ref('')
 const password = ref('')
-const onSubmit = (values: any) => {
-  console.log('submit', values)
+const onSubmit = async (values: { code: string; mobile: string }) => {
+  if (!agree.value) {
+    return showToast('请勾选用户协议')
+  }
+  const userRes = await getUserApi(values)
+  console.log('userRes', userRes)
+  store.setUser(userRes.data)
+  router.push('/pages/my/my')
+}
+//获取验证码
+const getCode = () => {
+  setTimeout(() => {
+    if (yzm.value == '获取验证码') {
+      yzm.value = 60
+    }
+    if (yzm.value == 0) {
+      yzm.value = '获取验证码'
+      return
+    }
+    ;(yzm.value as number)--
+    getCode()
+  }, 1000)
 }
 </script>
 
 <template>
   <div class="login-page">
-    <div class="header"><van-icon name="cross" /></div>
+    <div class="header"><van-icon name="cross" @click="$router.push('/loutry')" /></div>
     <div class="main">
       <h2>欢迎回来!</h2>
       <van-form autocomplete="off" @submit="onSubmit">
@@ -19,7 +46,7 @@ const onSubmit = (values: any) => {
           <van-field
             label-align="top"
             v-model="username"
-            name="手机号"
+            name="mobile"
             label="手机号"
             placeholder="请输入手机号"
             :rules="[
@@ -30,12 +57,19 @@ const onSubmit = (values: any) => {
           <van-field
             label-align="top"
             v-model="password"
-            name="验证码"
+            name="code"
             label="验证码"
             placeholder="请输入验证码"
             :rules="[{ required: true, message: '请输入验证码' }]"
             ><template #button>
-              <van-button size="small" type="primary">获取验证码</van-button>
+              <van-button
+                size="small"
+                type="primary"
+                :disabled="yzm != '获取验证码'"
+                :class="yzm != '获取验证码' ? 'a' : 'b'"
+                @click="getCode"
+                >{{ yzm }}</van-button
+              >
             </template></van-field
           >
         </van-cell-group>
@@ -45,7 +79,9 @@ const onSubmit = (values: any) => {
       </van-form>
     </div>
     <div class="p">
-      <van-checkbox v-model="agree">请认真阅读并同意 《用户服务协议》 《隐私权政策》</van-checkbox>
+      <van-checkbox v-model="agree"
+        >请认真阅读并同意 <span class="txt">《用户服务协议》 《隐私权政策》</span>
+      </van-checkbox>
     </div>
   </div>
 </template>
@@ -70,6 +106,9 @@ const onSubmit = (values: any) => {
     position: absolute;
     bottom: 10px;
     font-size: 14px;
+    .txt {
+      color: #0877c1;
+    }
   }
   .main {
     width: 100%;
@@ -94,6 +133,10 @@ const onSubmit = (values: any) => {
           padding: 5px 15px 0;
         }
       }
+    }
+    .a {
+      width: 80px;
+      background-color: var(--cp-dark);
     }
   }
 }

@@ -6,6 +6,7 @@ export type User = {
   expires_in?: number
   scope?: string
   userInfo?: UserInfo
+  jti: string
 }
 
 export type UserInfo = {
