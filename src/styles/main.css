@@ -18,3 +18,7 @@
   --van-button-primary-border-color: var(--cp-main);
   --van-button-primary-background: var(--cp-primary);
 }
+
+p, h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}

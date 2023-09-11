@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import navbar from './components/NavHome.vue'
+import Lists from './components/ListHome.vue'
 import { ref } from 'vue'
 const bgColor = ref<string>('#006c00')
 const onChange = (index: number) => {
@@ -29,6 +30,7 @@ const onChange = (index: number) => {
       </van-swipe>
     </div>
     <navbar></navbar>
+    <Lists :title="'热门推荐'" :tag="'HOT'" :size="8" :sort="'hot'" class="list"></Lists>
   </div>
 </template>
 
@@ -38,10 +40,12 @@ const onChange = (index: number) => {
   padding-bottom: 100px;
   .search {
     position: fixed;
+    z-index: 5;
     top: 0;
     width: 100%;
     height: 50px;
     box-sizing: border-box;
+    background-color: v-bind(bgColor);
     padding: 10px;
     .inp {
       width: 100%;
@@ -73,6 +77,9 @@ const onChange = (index: number) => {
         height: 100%;
       }
     }
+  }
+  .list {
+    padding: 15px 10px;
   }
 }
 </style>

@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <van-grid :column-num="4">
+  <van-grid :column-num="4" :gutter="10">
     <van-grid-item text="Java" />
     <van-grid-item text="前端" />
     <van-grid-item text="云计算" />
@@ -13,4 +13,13 @@
   </van-grid>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+::v-deep() {
+  .van-grid-item__content {
+    height: 30px;
+    background-color: var(--cp-line);
+    border-radius: 5px;
+    color: var(--cp-text2);
+  }
+}
+</style>
