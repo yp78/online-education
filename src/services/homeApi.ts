@@ -7,5 +7,5 @@ export const getHomelist = (params: {
   sort?: string
   isFree?: number
 }) => {
-  return request<ListType>('/api/course/api/course/search', 'POST', params)
+  return request<ListType>('/course/api/course/search', 'POST', params)
 }

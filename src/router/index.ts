@@ -19,6 +19,19 @@ const router = createRouter({
       component: () => import('../views/My/MyUser.vue')
     },
     {
+      path: '/pages/course/course-details',
+      name: 'course-details',
+      component: () => import('../views/Home/CourseDetails.vue')
+    },
+    {
+      path: '/pages/search/search',
+      name: 'search',
+      component: () => import('../views/Search/index.vue'),
+      meta: {
+        title: '搜索页面'
+      }
+    },
+    {
       path: '/loutry',
       name: 'loutry',
       component: () => import('../views/Loutry/index.vue'),

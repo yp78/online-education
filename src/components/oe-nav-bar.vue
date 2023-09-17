@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 const router = useRouter()
-const emit = defineEmits(['click-right'])
+const emit = defineEmits<{ (e: 'click-right'): void }>()
 const onClickLeft = () => {
   router.back()
 }
@@ -11,19 +11,22 @@ const onClickRight = () => {
 defineProps<{
   title?: string
   rightText?: string
+  rightIcon?: string
   back?: () => void
+  flag?: boolean
 }>()
 </script>
 
 <template>
   <van-nav-bar
     :title="title"
-    :right-text="rightText"
-    left-arrow
+    :left-arrow="flag"
     fixed
     @click-left="onClickLeft"
     @click-right="onClickRight"
-  />
+  >
+    <template #right>{{ rightText }}<van-icon :name="rightIcon" size="18" /> </template
+  ></van-nav-bar>
 </template>
 
 <style lang="scss" scoped>

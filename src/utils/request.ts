@@ -5,7 +5,7 @@ import { showToast } from 'vant'
 import router from '@/router'
 
 const instance = axios.create({
-  baseURL: 'http://m.mengxuegu.com',
+  baseURL: 'http://m.mengxuegu.com/api',
   timeout: 10000
 })
 instance.interceptors.request.use(

@@ -3,6 +3,7 @@ import navbar from './components/NavHome.vue'
 import Lists from './components/ListHome.vue'
 import { ref } from 'vue'
 const bgColor = ref<string>('#006c00')
+const pagenum = ref(0)
 const onChange = (index: number) => {
   if (index == 1) {
     bgColor.value = '#45328c'
@@ -24,17 +25,47 @@ const onChange = (index: number) => {
     </div>
     <div class="header">
       <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white" @change="onChange">
-        <van-swipe-item><img src="@/assets/home/banner1.jpg" alt="" /></van-swipe-item>
-        <van-swipe-item><img src="@/assets/home/banner2.jpg" alt="" /></van-swipe-item>
-        <van-swipe-item><img src="@/assets/home/banner3.jpg" alt="" /></van-swipe-item>
+        <van-swipe-item><img class="img" src="@/assets/home/banner1.jpg" alt="" /></van-swipe-item>
+        <van-swipe-item><img class="img" src="@/assets/home/banner2.jpg" alt="" /></van-swipe-item>
+        <van-swipe-item><img class="img" src="@/assets/home/banner3.jpg" alt="" /></van-swipe-item>
       </van-swipe>
     </div>
     <navbar></navbar>
-    <Lists :title="'热门推荐'" :tag="'HOT'" :size="8" :sort="'hot'" class="list"></Lists>
+    <Lists
+      :current="1"
+      :title="'热门推荐'"
+      :tag="'HOT'"
+      :size="8"
+      :sort="'hot'"
+      class="list"
+    ></Lists>
+    <Lists :current="1" :title="'近期上新'" :tag="'NEW'" :size="8" :isFree="1" class="list"></Lists>
+    <Lists
+      :current="1"
+      :title="'免费精选'"
+      :tag="'FREE'"
+      :size="8"
+      :sort="'new'"
+      class="list"
+    ></Lists>
+    <Lists
+      :current="pagenum"
+      :title="'付费精品'"
+      :tag="'NICE'"
+      :size="8"
+      :isFree="1"
+      class="list"
+      @addnum="pagenum++"
+    ></Lists>
   </div>
 </template>
 
 <style lang="scss" scoped>
+::deep() {
+  .van-swipe-item {
+    width: 100%;
+  }
+}
 .home-page {
   min-height: calc(100vh - 50px);
   padding-bottom: 100px;
@@ -72,7 +103,7 @@ const onChange = (index: number) => {
       height: 170px;
       margin: auto;
       border-radius: 10px;
-      img {
+      .img {
         width: 100%;
         height: 100%;
       }
