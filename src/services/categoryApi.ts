@@ -15,3 +15,8 @@ export const getSearchApi = (data: searchType) => {
 export const getArticleApi = (data: searchType) => {
   return request<resSearchType>('/article/api/article/search', 'POST', data)
 }
+
+//问答搜索数据
+export const getQuestionApi = (data: searchType) => {
+  return request<resSearchType>('/question/api/question/search', 'POST', data)
+}

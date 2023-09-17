@@ -9,6 +9,7 @@ const store = useSearchStore()
 onMounted(() => {
   if (route.query.txt) {
     onSearch(route.query.txt)
+    text.value = route.query.txt as string
   }
 })
 
@@ -90,6 +91,8 @@ const active = ref(0)
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: #fff;
+  z-index: 5;
   padding: 0 6px;
   .van-search {
     width: 97%;

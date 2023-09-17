@@ -1,34 +1,51 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { getSearchApi, getArticleApi, getgorylist } from '@/services/categoryApi'
-import type { Records, cateType } from '@/types/categoryType'
+import { getSearchApi, getArticleApi, getgorylist, getQuestionApi } from '@/services/categoryApi'
+import type { Records, cateType, searchType } from '@/types/categoryType'
 
 const props = defineProps<{
   title?: string
   text: string
 }>()
 
+const menuRef = ref(null)
+const itemRef = ref(null)
+const value2 = ref('a')
+
 const relist = ref<Records[]>([])
-const ResSearch = reactive({
+const ResSearch = reactive<searchType>({
   categoryId: '',
-  content: '',
+  content: props.text,
   current: 1,
   isFree: '',
   labelId: '',
   size: 10,
   sort: ''
 })
+
 const loading = ref(false)
 const finished = ref(false)
 const onLoad = async () => {
   if (ResSearch.current == 1) {
-    console.log(1)
     relist.value = []
   }
   ResSearch.current++
-  const res = props.title == '课程' ? await getSearchApi(ResSearch) : await getArticleApi(ResSearch)
-  relist.value.push(...res.data.records)
-  console.log('relist=>', relist.value)
+  const res =
+    props.title == '课程'
+      ? await getSearchApi(ResSearch)
+      : props.title == '文章'
+      ? await getArticleApi(ResSearch)
+      : await getQuestionApi(ResSearch)
+  if (value2.value == 'a') {
+    relist.value.push(...res.data.records)
+  } else if (value2.value == 'b') {
+    const copylist = res.data.records.filter((item) => item.isFree != 1)
+    relist.value.push(...copylist)
+  } else {
+    const copylist = res.data.records.filter((item) => item.isFree == 1)
+    relist.value.push(...copylist)
+  }
+
   loading.value = false
   if (relist.value.length >= res.data.total) {
     finished.value = true
@@ -39,53 +56,69 @@ const list = ref<cateType[]>([])
 
 const getlist = async () => {
   const reslist = await getgorylist()
-  console.log('reslist', reslist)
   list.value = reslist.data
 }
 getlist()
 const active = ref(0)
 // 导航
-const menuRef = ref(null)
-const itemRef = ref(null)
-const value1 = ref(0)
-const value2 = ref('a')
+
 const option1 = [
-  { text: '综合排序', value: 0 },
-  { text: '最新排序', value: 1 },
-  { text: '热门排序', value: 2 }
+  { text: '综合排序', value: '' },
+  { text: '最新排序', value: 'new' },
+  { text: '热门排序', value: 'hot' }
 ]
 const option2 = [
   { text: '全部课程', value: 'a' },
   { text: '付费课程', value: 'b' },
   { text: '免费课程', value: 'c' }
 ]
+
+const onclicknav = () => {
+  console.log(ResSearch.sort)
+  ResSearch.current = 1
+  onLoad()
+}
+const screen = (id: number) => {
+  ResSearch.labelId = id
+  ResSearch.current = 1
+  onLoad()
+}
 </script>
 
 <template>
   <div class="nav-page">
-    <van-dropdown-menu ref="menuRef">
-      <van-dropdown-item v-model="value1" :options="option1" />
-      <van-dropdown-item v-if="title == '课程'" v-model="value2" :options="option2" />
-      <van-dropdown-item title="筛选" ref="itemRef">
-        <div class="navrig">
-          <van-sidebar v-model="active">
-            <van-sidebar-item title="全部" />
-            <van-sidebar-item v-for="(item, index) in list" :key="index" :title="item.name" />
-          </van-sidebar>
-          <div class="right">
-            <div class="rig">
-              <van-button
-                v-for="(item, index) in list[active - 1]?.labelList"
-                :key="index"
-                round
-                type="default"
-                >{{ item.name }}</van-button
-              >
+    <van-sticky :offset-top="50">
+      <van-dropdown-menu ref="menuRef">
+        <van-dropdown-item v-model="ResSearch.sort" :options="option1" @change="onclicknav" />
+        <van-dropdown-item
+          v-if="title == '课程'"
+          v-model="value2"
+          :options="option2"
+          @change="onclicknav"
+        />
+        <van-dropdown-item title="筛选" ref="itemRef">
+          <div class="navrig">
+            <van-sidebar v-model="active">
+              <van-sidebar-item title="全部" />
+              <van-sidebar-item v-for="(item, index) in list" :key="index" :title="item.name" />
+            </van-sidebar>
+            <div class="right">
+              <div class="rig">
+                <van-button
+                  v-for="(item, index) in list[active - 1]?.labelList"
+                  :key="index"
+                  round
+                  type="default"
+                  @click="screen(item.id)"
+                  >{{ item.name }}</van-button
+                >
+              </div>
             </div>
           </div>
-        </div>
-      </van-dropdown-item>
-    </van-dropdown-menu>
+        </van-dropdown-item>
+      </van-dropdown-menu>
+    </van-sticky>
+
     <van-list
       v-model:loading="loading"
       :finished="finished"
@@ -135,6 +168,13 @@ const option2 = [
           alt=""
         />
         <!-- <div class="img"></div> -->
+      </div>
+      <div class="question" v-show="title == '问答'" v-for="(item, index) in relist" :key="index">
+        <h3>{{ item.title }}</h3>
+        <p class="p-question">
+          <span>{{ item.reply }}回答·{{ item.viewCount }}浏览</span
+          ><span>{{ item.nickName }}·{{ item.updateDate }}</span>
+        </p>
       </div>
     </van-list>
   </div>
@@ -236,6 +276,7 @@ const option2 = [
 .main {
   width: 100%;
   height: 110px;
+  box-sizing: border-box;
   border-bottom: 1px solid #ccc;
   display: flex;
   padding: 10px;
@@ -254,6 +295,19 @@ const option2 = [
       -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
     }
+  }
+}
+.question {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #ccc;
+  .p-question {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9px;
+    color: var(--cp-text3);
   }
 }
 </style>

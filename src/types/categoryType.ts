@@ -14,7 +14,7 @@ export type searchType = {
   content: string
   current: number
   isFree?: string
-  labelId?: string
+  labelId?: string | number
   size: number
   sort?: string
 }
@@ -42,4 +42,7 @@ export type Records = {
   viewCount?: number
   thumhup?: number
   updateDate?: string
+  reply?: number
+  status?: number
+  createData?: string
 }

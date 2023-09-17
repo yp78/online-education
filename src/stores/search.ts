@@ -5,7 +5,11 @@ export const useSearchStore = defineStore(
   () => {
     const setSearch = ref<string[]>([])
     const addSearch = (val: string) => {
-      setSearch.value.push(val)
+      if (setSearch.value.includes(val)) {
+        return
+      } else {
+        setSearch.value.push(val)
+      }
     }
     const clearSearch = () => {
       setSearch.value = []
