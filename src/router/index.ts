@@ -32,6 +32,14 @@ const router = createRouter({
       }
     },
     {
+      path: '/pages/article/details',
+      name: 'article-details',
+      component: () => import('../views/Article/ReadMore.vue'),
+      meta: {
+        title: '阅读详情'
+      }
+    },
+    {
       path: '/loutry',
       name: 'loutry',
       component: () => import('../views/Loutry/index.vue'),

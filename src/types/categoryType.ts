@@ -10,8 +10,8 @@ export type labList = {
 
 //搜索数据 -- 请求
 export type searchType = {
-  categoryId?: string
-  content: string
+  categoryId?: string | number
+  content?: string
   current: number
   isFree?: string
   labelId?: string | number

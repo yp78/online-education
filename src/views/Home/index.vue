@@ -18,7 +18,7 @@ const onChange = (index: number) => {
 <template>
   <div class="home-page">
     <div class="search">
-      <div class="inp">
+      <div class="inp" @click="$router.push('/pages/search/search')">
         <van-icon class="icon" name="search" />
         <span>搜索你想要的内容</span>
       </div>

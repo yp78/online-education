@@ -5,7 +5,7 @@ const store = useUserStore()
 
 <template>
   <div class="my-user-page">
-    <oe-nav-bar title="个人资料"></oe-nav-bar>
+    <oe-nav-bar title="个人资料" :flag="true"></oe-nav-bar>
     <van-cell class="p" title="头像">
       <template #right-icon>
         <div class="rig">
