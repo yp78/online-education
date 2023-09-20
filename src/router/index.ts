@@ -56,6 +56,22 @@ const router = createRouter({
       }
     },
     {
+      path: '/pages/course/course-play',
+      name: 'course-play',
+      component: () => import('../views/PayMent/index.vue'),
+      meta: {
+        title: '支付'
+      }
+    },
+    {
+      path: '/pages/order/confirm/confirm-buy',
+      name: 'confirm-buy',
+      component: () => import('../views/video/index.vue'),
+      meta: {
+        title: '视频'
+      }
+    },
+    {
       path: '/loutry',
       name: 'loutry',
       component: () => import('../views/Loutry/index.vue'),
