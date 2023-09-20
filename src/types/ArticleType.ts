@@ -21,3 +21,21 @@ export type LabelList = {
   id: number
   name: string
 }
+
+//评论内容
+export type ReviewType = Pick<
+  articleType,
+  'id' | 'userId' | 'nickName' | 'userImage' | 'createDate'
+> & { parentId: string; articleId: string; content: string }
+
+//问答评论内容
+export type questReview = Omit<ReviewType, 'content' | 'articleId'> & {
+  questionId: string
+  mdContent: string
+}
+//问答详情
+export type questionType = Omit<articleType, 'summary' | 'thumhup' | 'imageUrl' | 'ispublic'> & {
+  reply: number
+  star: number
+  status: number
+}

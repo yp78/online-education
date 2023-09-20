@@ -40,6 +40,22 @@ const router = createRouter({
       }
     },
     {
+      path: '/pages/question/details',
+      name: 'question-details',
+      component: () => import('../views/Question/QuestionMore.vue'),
+      meta: {
+        title: '问答详情'
+      }
+    },
+    {
+      path: '/pages/course/course-details',
+      name: 'course-details',
+      component: () => import('../views/Details/index.vue'),
+      meta: {
+        title: '详情页'
+      }
+    },
+    {
       path: '/loutry',
       name: 'loutry',
       component: () => import('../views/Loutry/index.vue'),

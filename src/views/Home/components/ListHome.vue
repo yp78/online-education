@@ -57,7 +57,13 @@ getList()
       </template>
     </van-cell>
     <van-swipe-cell v-show="sort">
-      <div class="left" v-for="(item, index) in list" :key="index" v-show="index < 5">
+      <div
+        class="left"
+        v-for="(item, index) in list"
+        :key="index"
+        v-show="index < 5"
+        @click="$router.push(`/pages/course/course-details?id=${item.id}`)"
+      >
         <div class="img">
           <img
             :src="
@@ -83,7 +89,13 @@ getList()
         </div>
       </div>
       <template #right>
-        <div class="left" v-for="(item, index) in list" :key="index" v-show="index >= 5">
+        <div
+          class="left"
+          v-for="(item, index) in list"
+          :key="index"
+          v-show="index >= 5"
+          @click="$router.push(`/pages/course/course-details?id=${item.id}`)"
+        >
           <div class="img">
             <img
               :src="
@@ -120,7 +132,11 @@ getList()
         :show-indicators="false"
         :loop="false"
       >
-        <van-swipe-item v-for="(item, index) in list" :key="index">
+        <van-swipe-item
+          v-for="(item, index) in list"
+          :key="index"
+          @click="$router.push(`/pages/course/course-details?id=${item.id}`)"
+        >
           <div class="main">
             <div class="img">
               <img
@@ -158,7 +174,12 @@ getList()
       finished-text="没有更多了"
       @load="onLoad"
     >
-      <div class="left" v-for="(item, index) in reslist" :key="index">
+      <div
+        class="left"
+        v-for="(item, index) in reslist"
+        :key="index"
+        @click="$router.push(`/pages/course/course-details?id=${item.id}`)"
+      >
         <div class="img">
           <img
             :src="

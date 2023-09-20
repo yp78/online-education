@@ -13,23 +13,22 @@ const id = ref('hot')
 const list = ref<Records[]>([])
 const loading = ref(false)
 const finished = ref(false)
+const onClickTab = ({ name }: any) => {
+  response.current = 1
+  id.value = name
+  list.value = []
+  finished.value = false
+  onLoad()
+}
 const onLoad = async () => {
-  if (response.current == 1) {
-    list.value = []
-  }
   const res = await QuestionApi(id.value, response)
   list.value.push(...res.data.records)
   response.current++
   loading.value = false
+
   if (list.value.length >= res.data.total) {
     finished.value = true
   }
-}
-
-const onClickTab = ({ name }: any) => {
-  response.current = 1
-  id.value = name
-  onLoad()
 }
 </script>
 

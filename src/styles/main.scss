@@ -16,10 +16,12 @@
   --cp-price: #EB5757;
   --cp-main:#345dc2;
   // 覆盖vant主体⾊
-  --van-primary-color: var(--cp-primary);
-  --van-button-primary-border-color:var(--cp-main);
-  --van-button-primary-background:var(--cp-primary);
 }
 p,h1,h2,h3,h4,h5,h6{
   margin: 0;
+}
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }

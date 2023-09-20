@@ -14,6 +14,9 @@ const relist = ref<Records[]>([])
 const loading = ref(false)
 const finished = ref(false)
 const onLoad = async () => {
+  if (response.current == 1) {
+    relist.value = []
+  }
   const res = await getArticleApi(response)
   relist.value.push(...res.data.records)
   response.current++
@@ -54,7 +57,12 @@ const onClickTab = ({ name }: any) => {
     >
       <van-tabs v-model:active="active" sticky offset-top="50px" @click-tab="onClickTab">
         <van-tab v-for="(item, index) in list" :key="index" :title="item.name" :name="item.id">
-          <div class="main" v-for="(item, index) in relist" :key="index">
+          <div
+            class="main"
+            v-for="(item, index) in relist"
+            :key="index"
+            @click="$router.push(`/pages/article/details?id=${item.id}`)"
+          >
             <div class="lf">
               <h3>{{ item.title }}</h3>
               <p class="pm">{{ item.summary }}</p>

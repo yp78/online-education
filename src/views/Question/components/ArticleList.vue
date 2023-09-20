@@ -6,7 +6,12 @@ defineProps<{
 </script>
 
 <template>
-  <div class="question" v-for="(item, index) in list" :key="index">
+  <div
+    class="question"
+    v-for="(item, index) in list"
+    :key="index"
+    @click="$router.push(`/pages/question/details?id=${item.id}`)"
+  >
     <h3>{{ item.title }}</h3>
     <p class="p-question">
       <span>{{ item.reply }}回答·{{ item.viewCount }}浏览</span
